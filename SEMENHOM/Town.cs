@@ -11,8 +11,8 @@ namespace SEMENHOM
     interface Town{
     }
     class City {
-        private int x;
-        private int y;
+        public int x;
+        public int y;
         private int D = 40;
         private Color pen = Color.Black;
         private bool canGo = true;

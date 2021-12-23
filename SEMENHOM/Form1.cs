@@ -25,6 +25,7 @@ namespace SEMENHOM
         int code = -1;
         bool haveOne = false;
         int _x, _y;
+        int c = -1;
 
         public Form1(){
             cities = new City[101];
@@ -130,21 +131,24 @@ namespace SEMENHOM
             drawMatrix();
             drawMonitor();
         }
+
+        City buff=null, first=null;
         private void doWay(EventArgs e)
         {
             MouseEventArgs a = (MouseEventArgs)e;
-            if (haveOne)
+            if (!checkIsHave(a.X, a.Y))
             {
-                ways[LW] = new Way(_x, a.X, _y, a.Y);
-                matrix[0, 1] = 1;
-                haveOne = false;
-                LW++;
-            }
-            else
-            {
-                _x = a.X;
-                _y = a.Y;
-                haveOne = true;
+                if (haveOne && buff!=first){
+                    matrix[buff.code - 1, first.code - 1] = 1;
+                    matrix[first.code - 1, buff.code - 1] = 1;
+                    haveOne = false;
+                    ways[LW] = new Way(first.x+D/2, buff.x + D / 2, first.y + D / 2, buff.y + D / 2);
+                    LW++;
+                }
+                else{
+                    haveOne = true;
+                    first = buff;
+                }
             }
         }
 
@@ -155,15 +159,17 @@ namespace SEMENHOM
 
         private void button1_Click(object sender, EventArgs e)
         {
+            int start = 0, finish = 1;
             try
             {
-                int start = Int32.Parse(textBox1.Text);
-                int finish = Int32.Parse(textBox2.Text);
+                start = Int32.Parse(textBox1.Text);
+                finish = Int32.Parse(textBox2.Text);
                 //Parse dontGo vertex
-                tbHelper.Text = search_way(start - 1, finish - 1);
             }catch (Exception er){
-                
+                tbHelper.Text = "We can`t read you number";
+                return;
             }
+            tbHelper.Text = search_way(start - 1, finish - 1);
         }
 
         int next_vertex()
@@ -186,26 +192,34 @@ namespace SEMENHOM
             for (int i = 0; i < S; i++) Price[i] = 99999999;
             Price[start] = 0;
             int now = start;
+            int last = -1;
             while (haveStay[finish] != 1)
             {
                 for (int i = 0; i < S; i++)
                 {
-                    if (matrix[now, i] != code && cities[i].isfriendlyTown()){
+                    Console.WriteLine(matrix[now, i] != c && cities[i].isfriendlyTown());
+                    if (matrix[now, i] != c && cities[i].isfriendlyTown()){
                         Price[i] = Math.Min(Price[i], Price[now] + matrix[now, i]);
                     }
                 }
                 haveStay[now] = 1;
+                last = now;
                 now = next_vertex();
-                Console.WriteLine(now);
+                if (last == now) break;
+            }
+            if (haveStay[finish]==0){
+                return "We havent way to this city.";
             }
             string reverse_V = "";
             now = finish;
-            while (haveStay[start] != 0)
+            int nn = 0;
+            while (haveStay[start] != 0 && nn!=-1)
             {
-                int Next = 999999, nn = -1;
+                int Next = 999999;
+                nn = -1;
                 for (int i = 0; i < S; i++)
                 {
-                    if (matrix[i, now] != code && Next > Price[i])
+                    if (matrix[now, i] != code && Next > Price[i])
                     {
                         Next = Price[i];
                         nn = i;
@@ -214,9 +228,10 @@ namespace SEMENHOM
                 if (nn == -1) break;
                 reverse_V = reverse_V + (now+1).ToString() + "<-";
                 haveStay[now] = 0;
+                Console.WriteLine(now);
                 now = nn;
             }
-            reverse_V = reverse_V + (start + 1).ToString();
+            reverse_V = reverse_V.Substring(0, reverse_V.Length-2);// + (start + 1).ToString();
             return reverse_V;
         }
 
@@ -227,6 +242,17 @@ namespace SEMENHOM
 
         private void radioButton2_Click(object sender, EventArgs e){
             code = 1;//create way
+        }
+
+        private bool checkIsHave(int x, int y){
+            float sq;
+            for (int i = 0; i < S; i++){
+                if (cities[i].inTown(x, y)){
+                    buff = cities[i];
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
