@@ -39,6 +39,7 @@ namespace SEMENHOM
                 }
             }
             InitializeComponent();
+            label4.Text = "Задана система односторонних дорог. Найти путь, соединяющий города A и B и не проходящий через \n заданное множество городов. Разработать алгоритм решения этой задачи и написать программу.";
         }
         private void pictureBox1_DoubleClick(object sender, EventArgs e){
             MouseEventArgs a = (MouseEventArgs)e;
@@ -193,6 +194,7 @@ namespace SEMENHOM
             Price[start] = 0;
             int now = start;
             int last = -1;
+            bool hav_l = false;
             while (haveStay[finish] != 1)
             {
                 for (int i = 0; i < S; i++)
@@ -201,6 +203,7 @@ namespace SEMENHOM
                     if (matrix[now, i] != c && cities[i].isfriendlyTown()){
                         Price[i] = Math.Min(Price[i], Price[now] + matrix[now, i]);
                     }
+                    if (!cities[i].isfriendlyTown()) hav_l = true;
                 }
                 haveStay[now] = 1;
                 last = now;
@@ -219,7 +222,7 @@ namespace SEMENHOM
                 nn = -1;
                 for (int i = 0; i < S; i++)
                 {
-                    if (matrix[now, i] != code && Next > Price[i])
+                    if (matrix[now, i] != c && Next > Price[i] && haveStay[i]==1)
                     {
                         Next = Price[i];
                         nn = i;
@@ -231,7 +234,13 @@ namespace SEMENHOM
                 Console.WriteLine(now);
                 now = nn;
             }
-            reverse_V = reverse_V.Substring(0, reverse_V.Length-2);// + (start + 1).ToString();
+            if (hav_l){
+                reverse_V = reverse_V + (start + 1).ToString();
+            }
+            else{
+                reverse_V = reverse_V.Substring(0, reverse_V.Length - 2);
+            }
+            // 
             return reverse_V;
         }
 

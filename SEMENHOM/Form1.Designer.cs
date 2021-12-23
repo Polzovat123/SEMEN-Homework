@@ -38,6 +38,7 @@ namespace SEMENHOM
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.button1 = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,7 +47,7 @@ namespace SEMENHOM
             this.pictureBox1.BackColor = System.Drawing.SystemColors.Window;
             this.pictureBox1.Location = new System.Drawing.Point(-2, -2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1152, 652);
+            this.pictureBox1.Size = new System.Drawing.Size(1152, 701);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
@@ -117,19 +118,29 @@ namespace SEMENHOM
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1176, 418);
+            this.button1.Location = new System.Drawing.Point(1176, 411);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(258, 23);
+            this.button1.Size = new System.Drawing.Size(258, 30);
             this.button1.TabIndex = 8;
             this.button1.Text = "Найти Путь!";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 642);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(504, 17);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Задана система односторонних дорог. Найти путь, соединяющий города A";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1473, 647);
+            this.ClientSize = new System.Drawing.Size(1473, 698);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.radioButton2);
             this.Controls.Add(this.radioButton1);
@@ -159,6 +170,7 @@ namespace SEMENHOM
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label4;
     }
 }
 

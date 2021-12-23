@@ -63,7 +63,37 @@ namespace SEMENHOM
             y2 = _y2;
         }
         public void draw(Graphics k){
-            k.DrawLine(pen, x1, y1, x2, y2);
+            DrawArrow(k,
+                        new Pen(Color.Black, 5),
+                        new Point(x1, y1),
+                        new Point(x2, y2),
+                        25);
+        }
+
+        private void DrawArrowhead(Graphics gr, Pen pen, PointF p, float nx, double ny, double length)
+        {
+            double ax = length * (-ny - nx);
+            double ay = length * (nx - ny);
+            PointF[] points =
+            {
+                new PointF((float)(p.X + ax), (float)(p.Y + ay)),
+                p,
+                new PointF((float)(p.X - ay), (float)(p.Y + ax))
+            };
+            gr.DrawLines(pen, points);
+        }
+        private void DrawArrow(Graphics gr, Pen pen, PointF p1, PointF p2, double length)
+        {
+            gr.DrawLine(pen, p1, p2);
+            double vx = p2.X - p1.X;
+            double vy = p2.Y - p1.Y;
+            double dist = (float)Math.Sqrt(vx * vx + vy * vy);
+            vx /= dist;
+            vy /= dist;
+            DrawArrowhead(gr, new Pen(Color.Black, 5), p2, (float)vx, vy, length);
+
         }
     }
+
+    
 }
